@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evis HTB · 2026 · Englische Redewendungen</title>
+<style>
+:root { --blue: #2a52be; --blue2: #1b2a4a; --ink: #29213a; --muted: #655b70; --gold: #e7c26a; }
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); background: #e9eef8; }
+button { font: inherit; cursor: pointer; }
+.app { width: min(100%, 440px); min-height: 100svh; margin: 0 auto; padding: 6px; display: flex; flex-direction: column; gap: 5px; }
+.top { background: var(--blue2); color: #fff; border-radius: 16px; padding: 8px 12px; text-align: center; border-bottom: 3px solid var(--gold); }
+.top h1 { font-size: 1.02rem; line-height: 1.1; margin: 0 0 3px; letter-spacing: .02em; white-space: nowrap; }
+.top p { margin: 0; font-size: .74rem; color: #dbe6ff; }
+.counter { text-align: center; color: var(--blue); font-weight: 700; font-size: .72rem; letter-spacing: .08em; margin: -2px 0; }
+.card { background: #fff; border: 1px solid #c3cdea; border-radius: 18px; overflow: hidden; box-shadow: 0 4px 16px #30204312; display: flex; flex-direction: column; justify-content: center; flex: 1; min-height: 0; cursor: pointer; position: relative; }
+.rubric { position: absolute; top: 10px; right: 14px; font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #b0bfe0; }
+.card:active { transform: translateY(2px); }
+.en { padding: 10px 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; }
+.label { font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #8d9dc4; }
+.eng { font-size: clamp(1.15rem, 4.7vw, 1.5rem); line-height: 1.16; font-weight: 700; overflow-wrap: break-word; }
+.epnum { font-size: clamp(2.3rem, 10vw, 3.3rem); font-weight: 800; line-height: 1; color: var(--blue); letter-spacing: .02em; }
+.rule { width: 38px; height: 2.5px; background: #8d9dc4; border-radius: 999px; margin: 8px auto; }
+.de { padding: 10px 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; }
+.transl { font-size: clamp(0.98rem, 4.2vw, 1.35rem); line-height: 1.3; font-weight: 700; color: var(--blue2); overflow-wrap: break-word; }
+.nav { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.nav-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.nav button, .nav-row2 button, .print-btn { display: block; width: 100%; border: 0; border-radius: 999px; padding: 8px 6px; font-size: .7rem; font-weight: 700; white-space: nowrap; background: var(--blue2); color: #fff; }
+.nav button:disabled { opacity: .35; cursor: default; }
+#speakBtn.active { background: #a33; }
+footer { text-align: center; font-size: .68rem; color: var(--muted); padding: 0 2px; }
+footer .row1 { display: flex; align-items: center; justify-content: space-between; }
+footer .mid { text-align: center; flex: 1; }
+footer .row2 { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 3px; cursor: pointer; }
+footer a { color: var(--muted); text-decoration: underline; cursor: pointer; }
+.fold-wrap { perspective: 300px; width: 44px; height: 26px; flex-shrink: 0; }
+.foldcard { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; animation: fold 6s ease-in-out infinite; }
+@keyframes fold { 0%, 18% { transform: rotateY(0deg); } 42%, 72% { transform: rotateY(-150deg); } 96%, 100% { transform: rotateY(0deg); } }
+.foldface { position: absolute; inset: 0; backface-visibility: hidden; border: 1px solid #cbbde0; border-radius: 4px; background: #fff; display: flex; align-items: center; justify-content: center; font-size: .5rem; font-weight: 700; letter-spacing: .04em; color: var(--blue2); overflow: hidden; }
+.foldface.back { transform: rotateY(180deg); font-size: .42rem; font-weight: 400; color: var(--muted); }
+.studio-panel { position: fixed; left: 0; right: 0; bottom: 0; margin: 0 auto; max-width: 440px; background: #141021; color: #fff; border-radius: 18px 18px 0 0; transform: translateY(105%); transition: transform .45s ease; z-index: 40; box-shadow: 0 -8px 30px rgba(20,16,33,.35); cursor: pointer; }
+.studio-panel.open { transform: translateY(0); }
+.studio-inner { padding: 26px 20px 22px; text-align: center; }
+.studio-title { font-size: 1.05rem; font-weight: 800; letter-spacing: .12em; }
+.studio-title2 { font-size: 1.05rem; font-weight: 400; letter-spacing: .12em; margin-top: 2px; }
+.studio-rule { width: 56px; height: 2.5px; background: #c9ad68; border-radius: 999px; margin: 10px auto; }
+.studio-sub { font-size: .74rem; letter-spacing: .14em; color: #c9ad68; }
+.overlay { display: none; position: fixed; inset: 0; background: rgba(27,42,74,.55); z-index: 50; padding: 20px; overflow-y: auto; }
+.overlay.open { display: flex; align-items: center; justify-content: center; }
+.dlg { background: #fff; border-radius: 18px; padding: 22px; max-width: 400px; width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,.3); max-height: 86vh; overflow-y: auto; }
+.cal-btn { position: absolute; top: 10px; left: 12px; width: 36px; height: 36px; border-radius: 10px; border: 1.5px solid var(--gold); background: var(--blue2); color: #fff; font-size: 18px; line-height: 1; cursor: pointer; box-shadow: 0 3px 10px rgba(27,42,74,.3); z-index: 5; }
+.cal-btn:hover { background: var(--gold); color: #1b2a4a; }
+.dlg.cal { max-width: 480px; display: flex; flex-direction: column; padding: 14px 16px; overflow: hidden; }
+.dlg.cal h3 { margin: 0 0 4px; }
+.cal-hint { font-size: .72rem; color: #667; margin: 0 0 10px; flex: none; }
+.cal-scroll { height: 56vh; max-height: 430px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.cal-grid { display: block; padding: 2px; }
+.cal-m { margin: 0 0 16px; }
+.cal-m h4 { text-align: center; font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; color: #1b2a4a; margin: 0 0 5px; }
+.cal-w { display: grid; grid-template-columns: repeat(7, 40px); gap: 6px; margin: 0 auto 4px; width: 316px; }
+.cal-w span { display: block; height: 16px; line-height: 16px; font-size: .54rem; font-weight: 700; color: #99a; text-align: center; }
+.cal-d { display: grid; grid-template-columns: repeat(7, 40px); gap: 6px; margin: 0 auto; width: 316px; }
+.cal-d .blank { display: block; width: 40px; height: 40px; visibility: hidden; }
+.cal-d button { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 0; border-radius: 8px; background: #eef1fa; color: #1b2a4a; font-size: .7rem; font-weight: 600; font-family: inherit; cursor: pointer; position: relative; padding: 0; margin: 0; box-sizing: border-box; }
+.cal-d button.sun { color: #b04040; background: #f9eff0; }
+.cal-d button.past { visibility: hidden; }
+.cal-d button:hover { background: var(--gold); color: #1b2a4a; }
+.dlg.cal > button { flex: none; margin-top: 12px; }
+@media (max-width: 680px) {
+  .cal-m h4 { font-size: .6rem; margin: 0 0 4px; }
+  .cal-w { grid-template-columns: repeat(7, 36px); gap: 4px; width: 276px; }
+  .cal-w span { height: 15px; line-height: 15px; font-size: .48rem; }
+  .cal-d { grid-template-columns: repeat(7, 36px); gap: 4px; width: 276px; }
+  .cal-d .blank { width: 36px; height: 36px; }
+  .cal-d button { width: 36px; height: 36px; font-size: .64rem; border-radius: 7px; }
+}
+.dlg h3 { margin: 0 0 10px; color: var(--blue2); }
+.dlg p { font-size: .85rem; line-height: 1.45; margin: 0 0 10px; }
+.dlg button { margin-top: 6px; border: 0; border-radius: 12px; padding: 10px 20px; font-weight: 700; background: var(--blue2); color: #fff; }
+/* Startseite */
+.start { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; text-align: center; padding: 14px; overflow-y: auto; color: #fff; background: linear-gradient(160deg, #101c36 0%, #1b2a4a 45%, #2a52be 100%); cursor: pointer; }
+.start.gone { display: none; }
+.start-inner { display: flex; flex-direction: column; align-items: center; gap: 10px; max-width: 340px; margin: auto; padding: 6px 0 22px; }
+.start-label { font-size: .74rem; font-weight: 700; letter-spacing: .35em; color: #dbe6ff; }
+.start-year { font-size: clamp(3.6rem, 18vw, 6rem); font-weight: 800; line-height: 1; text-shadow: 0 8px 34px rgba(0,0,0,.4); }
+.start-lion { width: 88px; height: 88px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffe9b8, #e7c26a 62%, #c39a45); display: flex; align-items: center; justify-content: center; font-size: 2.6rem; line-height: 1; box-shadow: 0 12px 34px rgba(0,0,0,.38), inset 0 0 0 3px rgba(255,255,255,.4); }
+.start-sub { font-size: .85rem; line-height: 1.5; color: #dbe6ff; }
+.start-ep { font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-top: 12px; }
+.start-btn { border: 0; border-radius: 999px; padding: 12px 28px; font-weight: 700; font-size: .9rem; background: var(--gold); color: #1b2a4a; box-shadow: 0 8px 22px rgba(0,0,0,.35); }
+.start-btn2 { border: 1px solid rgba(231,194,106,.8); border-radius: 999px; padding: 8px 20px; font-weight: 700; font-size: .75rem; background: transparent; color: #e7c26a; }
+.start-frame { display: flex; flex-direction: column; align-items: center; gap: 10px; border: 1.5px solid rgba(231,194,106,.7); border-radius: 20px; padding: 30px 22px 28px; box-shadow: 0 0 0 6px rgba(231,194,106,.12), 0 24px 60px rgba(0,0,0,.35), inset 0 0 50px rgba(0,0,0,.28); background: radial-gradient(ellipse at top, rgba(42,82,190,.35), transparent 70%); }
+.start-name { font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: clamp(2.1rem, 10vw, 2.7rem); color: #e7c26a; letter-spacing: .05em; line-height: 1.1; text-shadow: 0 4px 18px rgba(0,0,0,.4); }
+.start-orn { font-size: .62rem; letter-spacing: .1em; color: rgba(231,194,106,.9); }
+.start-flag { font-size: .88rem; font-weight: 700; letter-spacing: .1em; color: #e7c26a; }
+.print-only { display: none; }
+@media print {
+  @page { size: A4 portrait; margin: 8mm; }
+  html, body { background: #fff !important; margin: 0 !important; padding: 0 !important; }
+  html, body, main, section, div { width: auto !important; max-width: none !important; }
+  body { min-height: 0 !important; }
+  .app { display: none !important; }
+  .overlay { display: none !important; }
+  .studio-panel { display: none !important; }
+  .start { display: none !important; }
+  .print-only { display: block !important; width: 194mm !important; max-width: 194mm !important; margin: 0 !important; }
+  .print-heading { display: flex; align-items: center; justify-content: space-between; font-size: 7pt; line-height: 1.1; color: #555; font-weight: 700; padding: 0 0 0.8mm; width: 192mm; margin: 0; }
+  .sheet { display: grid; grid-template-columns: repeat(5, 36mm); grid-auto-rows: 66mm; gap: 0.5mm 2.6mm; padding: 0 0 1mm; width: 192mm; margin: 0; page-break-after: always; position: relative; box-sizing: content-box; }
+  .sheet:last-child { page-break-after: auto; }
+  .chip { border: 0.35mm dashed #999; padding: 1.5mm 2mm 2mm; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; break-inside: avoid; }  /* gestrichelte Linie = Schneidelinie, Karte 36 x 66 mm */
+  .c-glue { width: 100%; border-bottom: 0.25mm dotted #ccc; margin-bottom: 1.1mm; flex: none; }  /* Klebefläche oben */
+  .chip .c-top { display: block; width: 100%; margin-bottom: 2mm; }  /* Episode-Zeile, darunter Datum */
+  .chip .c-label { display: block; font-size: 6pt; font-weight: 700; letter-spacing: .04em; color: #2a52be; }
+  .chip .c-rub { display: block; font-size: 6.2pt; font-weight: 400; letter-spacing: .04em; color: #666; margin-top: 0.3mm; }
+  .chip .eng { font-size: 9.4pt; font-weight: 400; color: #1b2a4a; line-height: 1.12; overflow-wrap: break-word; }
+  .chip .eng::first-line { font-weight: 800; }  /* nur die erste Zeile fett */
+  .chip .rule { width: 10mm; height: 0.5mm; background: #bbb; margin: 2.6mm 0; }
+  .chip .de { font-size: 7.6pt; font-weight: 400; color: #333; line-height: 1.12; overflow-wrap: break-word; }
+  .year-end { grid-column: 2 / -1; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 13pt; font-weight: 700; color: #1b2a4a; border: 0.4mm dashed #e7c26a; border-radius: 4mm; margin-top: 2mm; }
+  .chip.lg .de { font-size: 7pt; }
+  .chip.xl .de { font-size: 6.4pt; }
+  .chip.lg .eng { font-size: 8.4pt; } .chip.xl .eng { font-size: 7.4pt; }
+  .sheet-footer { position: absolute; bottom: 0; left: 0; width: 100%; text-align: center; font-size: 6pt; line-height: 1; color: #aaa; }  /* im unteren Randbereich, ohne Kartenreihe */
+  .chip.cv { background: linear-gradient(160deg, #101c36 0%, #1b2a4a 45%, #2a52be 100%); border: 0.35mm dashed #999; }  /* Deckblatt als kleine Karte */
+  .chip.cv .c-glue { border-bottom: 0.25mm dotted rgba(231,194,106,.6); }
+  .cv-label2 { font-size: 4.4pt; font-weight: 700; letter-spacing: .18em; color: #dbe6ff; line-height: 1.5; }
+  .cv-year2 { font-size: 19pt; font-weight: 800; line-height: 1; color: #fff; }
+  .cv-lion2 { font-size: 14pt; line-height: 1.15; }
+  .cv-name2 { font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 9.5pt; color: #e7c26a; }
+  .cv-orn2 { font-size: 4pt; letter-spacing: .1em; color: #e7c26a; }
+  .cv-sub2 { font-size: 5.2pt; line-height: 1.5; color: #dbe6ff; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+<div class="start" id="startPage" aria-label="Startseite">
+  <div class="start-inner">
+    <div class="start-frame">
+      <div class="start-label">Evis Hosentaschenbuch</div>
+      <div class="start-year">2026</div>
+      <div class="start-lion" aria-hidden="true">🇬🇧</div>
+      <div class="start-orn" aria-hidden="true">✦ ─── ✦ ─── ✦</div>
+      <div class="start-name">Evi</div>
+      <div class="start-sub">Jahresband · 48 Tage vom 14.11. bis 31.12.2026<br>Englische Redewendungen · jeden Tag eine</div>
+      <div class="start-flag">🇬🇧 &nbsp;Englisch / Deutsch&nbsp; 🇩🇪</div>
+    </div>
+    <div class="start-ep" id="startEp">English idioms · deutsch erklärt</div>
+    <button class="start-btn" id="startBtn" type="button">Buch öffnen →</button>
+    <button class="start-btn2" id="startTopBtn" type="button">Zum Anfang · 14.11.2026</button>
+  </div>
+</div>
+<main class="app">
+  <header class="top">
+    <h1 id="titleBtn" title="Deckblatt öffnen" style="cursor:pointer">Evis HTB · 2026</h1>
+    <p>Jahresband · ✦ · 48 Tage · 14.11. bis 31.12.2026<br>Version 1.2.1</p>
+  </header>
+  <div class="counter" id="counter">TAG 01 VON 48  ·  EPISODE 22.646</div>
+  <section class="card" id="studyCard" aria-live="polite">
+    <button class="cal-btn" id="calBtn" type="button" title="Datumsregister öffnen – Tag wählen">📅</button>
+    <div class="rubric" id="rubric">Sa · 14.11.2026</div>
+    <div class="en">
+      <div class="label" id="epLabel">Episode deines Lebens</div>
+      <div class="epnum" id="epNum">22.646</div>
+    </div>
+    <div class="rule"></div>
+    <div class="de">
+      <div class="label" id="idiomLabel">English Redewendung</div>
+      <div class="eng" id="enText"></div>
+      <div class="transl" id="deText"></div>
+    </div>
+  </section>
+  <nav class="nav">
+    <button id="prevBtn" type="button">← Zurück</button>
+    <button id="nextBtn" type="button">Weiter →</button>
+  </nav>
+  <nav class="nav-row2">
+    <button id="speakBtn" type="button" aria-pressed="false">🔊 Vorlesen</button>
+    <button class="print-btn" id="printBtn" type="button">▤ Druckvorlage (20 pro A4)</button>
+  </nav>
+  <footer>
+    <div class="row1">
+      <a onclick="openDlg('dlgImp')">Impressum</a>
+      <span class="mid">© 2026</span>
+      <a onclick="openDlg('dlgDs')">Datenschutz</a>
+    </div>
+    <div class="row2" id="studioToggle" onclick="toggleStudio()" role="button" tabindex="0" aria-label="ARC(E)ANA creative studio öffnen">
+      <div class="fold-wrap" aria-hidden="true">
+        <div class="foldcard" id="foldcard">
+          <div class="foldface">A</div>
+          <div class="foldface back">▲</div>
+        </div>
+      </div>
+      <span>ARC(E)ANA creative studio</span>
+    </div>
+  </footer>
+  <div class="studio-panel" id="studioPanel">
+    <div class="studio-inner">
+      <div class="studio-title">ARC(E)ANA</div>
+      <div class="studio-title2">creative studio</div>
+      <div class="studio-rule"></div>
+      <div class="studio-sub">Entdecken · Entwickeln · Erschaffen</div>
+    </div>
+  </div>
+</main>
+<div class="overlay" id="dlgImp"><div class="dlg">
+  <h3>IMPRESSUM</h3>
+  <p><strong>Ella Pinorella Verlag · Katharina Schütz</strong><br>Herausgeberin und inhaltlich Verantwortliche<br>Platz der Einheit 10 · 14467 Potsdam · Deutschland<br>E-Mail: info@ella-pinorella.de</p>
+  <p><strong>Über dieses Hosentaschenbuch (HTB)</strong></p>
+  <p>„Evis HTB · 2026 – Der Jahresband"<br>48 Karten vom 14. November bis zum 31. Dezember 2026 – jeden Tag eine englische Redewendung mit deutscher Übersetzung.<br>Ein Geschenk von Katharina.</p>
+  <p>Evi ist am 14. November 1964 geboren – jeder Tag ist eine Episode ihres Lebens. Der Band beginnt an ihrem 62. Geburtstag mit Episode 22.646 und endet Silvester mit Episode 22.693.</p>
+  <p>Mit bekannten englischen Redewendungen (English idioms) und ihren deutschen Entsprechungen – zum Lernen, Schmunzeln und Mitnehmen in der Hosentasche.</p>
+  <p>Ein Hosentaschenbuch nach dem Lernkonzept ARC(E)ANA – Entdecken. Entwickeln. Erschaffen.</p>
+  <p>© 2026 Ella Pinorella Verlag · Katharina Schütz</p>
+  <button onclick="closeDlg('dlgImp')">Schließen</button>
+</div></div>
+<div class="overlay" id="dlgDs"><div class="dlg">
+  <h3>Datenschutzhinweise zur App</h3>
+  <p><strong>1. Allgemeines</strong><br>Diese App wurde nach dem Grundsatz der Datensparsamkeit entwickelt. Bei ihrer Nutzung werden keine personenbezogenen Daten durch die App erhoben, abgefragt, gespeichert oder an Dritte übermittelt. Eine Anmeldung, Registrierung oder Eingabe persönlicher Daten ist nicht vorgesehen.</p>
+  <p><strong>2. Keine Cookies und kein Tracking</strong><br>Die App verwendet keine eigenen Cookies und setzt keine Analyse-, Tracking- oder Werbedienste ein. Es werden keine Nutzungsprofile erstellt und keine Daten zu Werbezwecken gesammelt. Die App verwendet keinen eigenen Browser-Speicher, um personenbezogene Daten oder Nutzungsinformationen abzulegen.</p>
+  <p><strong>3. Lokale Nutzung und Offline-Funktion</strong><br>Sämtliche Inhalte und Funktionen sind Bestandteil der App. Nach dem Herunterladen kann sie ohne aktive Internetverbindung genutzt werden, sofern sie vollständig auf dem Endgerät gespeichert ist. Die App baut selbstständig keine Verbindung zu einem eigenen Anwendungsserver auf und übermittelt keine Nutzungsdaten.</p>
+  <p><strong>4. Vorlesefunktion und Klangerzeugung</strong><br>Die Vorlesefunktion nutzt die im Endgerät bzw. Browser verfügbare Sprachausgabe. Klänge und Toneffekte werden über die Funktionen des Browsers erzeugt. Die App selbst versendet keine Texteingaben, Sprachaufnahmen oder sonstigen Nutzungsdaten. Die technische Verarbeitung durch Betriebssystem, Browser oder gegebenenfalls externe Sprachdienste richtet sich nach den Geräteeinstellungen und den Datenschutzbestimmungen der entsprechenden Anbieter.</p>
+  <p><strong>5. Keine Weitergabe von Daten</strong><br>Eine Weitergabe, Vermarktung oder anderweitige Nutzung personenbezogener Daten durch die App findet nicht statt, da die App selbst keine solchen Daten erhebt oder speichert.</p>
+  <p><strong>6. Bereitstellung über eine Website</strong><br>Wird die App über eine Website aufgerufen oder mittels iframe in eine Website eingebunden, können beim Aufruf technisch notwendige Verbindungsdaten durch den Hostinganbieter verarbeitet werden (u. a. IP-Adresse, Datum und Uhrzeit des Zugriffs, technische Browserinformationen). Diese Verarbeitung betrifft den Betrieb der Website und ist von den Funktionen der App selbst zu unterscheiden. Hierfür gelten ergänzend die Datenschutzhinweise des Websitebetreibers bzw. Hostinganbieters.</p>
+  <p><strong>7. Rechtsgrundlage und Informationspflicht</strong><br>Soweit durch die App selbst keine personenbezogenen Daten verarbeitet werden, entstehen aus ihrer eigenständigen Nutzung keine Datenverarbeitungsvorgänge, über die nach Art. 13 DSGVO zu informieren wäre. Für eine gegebenenfalls stattfindende Verarbeitung durch Websitebetreiber, Hostinganbieter, Browser oder Betriebssysteme gelten die jeweiligen datenschutzrechtlichen Verantwortlichkeiten.</p>
+  <p><strong>8. Stand und Aktualität</strong><br>Diese Datenschutzhinweise beziehen sich auf die beschriebene technische Ausführung der App. Bei Änderungen der technischen Funktionen oder der eingesetzten Dienste werden sie entsprechend angepasst.</p>
+  <button onclick="closeDlg('dlgDs')">Schließen</button>
+</div></div>
+<div class="overlay" id="dlgCal"><div class="dlg cal">
+  <h3>📅 Datumsregister · 14.11. – 31.12.2026</h3>
+  <p class="cal-hint">Tippe auf ein Datum – das Buch springt direkt zu dieser Karte. Sonntage in Rot.</p>
+  <div class="cal-scroll"><div class="cal-grid" id="calGrid"></div></div>
+  <button onclick="closeDlg('dlgCal')">Schließen</button>
+</div></div>
+<section class="print-only" id="printArea" aria-label="Druckvorlage"></section>
+<script>
+const IDIOMS = [
+  ["Today is a beautiful day – it's your birthday. Happy Birthday, Evi!","Heute ist ein wunderschöner Tag – nämlich dein Geburtstag. Alles Liebe zum Geburtstag!"],
+  ["Every day is a fresh start.","Jeder Tag ist ein neuer Anfang."],
+  ["The early bird catches the worm.","Wer zuerst kommt, mahlt zuerst."],
+  ["Break a leg!","Toi toi toi!"],
+  ["It's a piece of cake.","Das ist ein Kinderspiel."],
+  ["The ball is in your court.","Jetzt bist du dran."],
+  ["It's raining cats and dogs.","Es gießt in Strömen."],
+  ["Actions speak louder than words.","Taten sagen mehr als Worte."],
+  ["Better late than never.","Besser spät als nie."],
+  ["Every cloud has a silver lining.","Jede Wolke hat einen silbernen Rand."],
+  ["Kill two birds with one stone.","Zwei Fliegen mit einer Klappe schlagen."],
+  ["Once in a blue moon.","Alle Jubeljahre einmal."],
+  ["A blessing in disguise.","Ein Glück im Unglück."],
+  ["Life is a journey, not a destination.","Das Leben ist eine Reise, kein Ziel."],
+  ["Hit the nail on the head.","Den Nagel auf den Kopf treffen."],
+  ["Let the cat out of the bag.","Die Katze aus dem Sack lassen."],
+  ["Don't put all your eggs in one basket.","Setze nie alles auf eine Karte."],
+  ["Good things take time.","Gute Dinge brauchen Zeit."],
+  ["Every dog has its day.","Jeder hat mal seinen großen Tag."],
+  ["A penny for your thoughts.","Woran denkst du gerade?"],
+  ["Beat around the bush.","Um den heißen Brei herumreden."],
+  ["Cost an arm and a leg.","Ein Vermögen kosten."],
+  ["Spill the beans.","Etwas ausplaudern."],
+  ["Speak of the devil.","Wenn man vom Teufel spricht, kommt er geritten."],
+  ["On cloud nine.","Im siebten Himmel."],
+  ["Off the beaten track.","Abseits der ausgetretenen Pfade."],
+  ["No pain, no gain.","Ohne Fleiß kein Preis."],
+  ["Out of the blue.","Aus heiterem Himmel."],
+  ["Time flies.","Die Zeit vergeht wie im Flug."],
+  ["You can't judge a book by its cover.","Der Schein trügt."],
+  ["Home is where the heart is.","Zuhause ist dort, wo das Herz ist."],
+  ["It takes two to tango.","Dazu gehören immer zwei."],
+  ["Hang in there.","Bleib dran!"],
+  ["Miss the boat.","Die Gelegenheit verpassen."],
+  ["Go the extra mile.","Sich besonders ins Zeug legen."],
+  ["Keep your chin up.","Kopf hoch!"],
+  ["Call it a day.","Für heute Feierabend machen."],
+  ["Break the ice.","Das Eis brechen."],
+  ["All ears.","Ganz Ohr sein."],
+  ["Easier said than done.","Leichter gesagt als getan."],
+  ["Wear your heart on your sleeve.","Seine Gefühle offen zeigen."],
+  ["When in Rome, do as the Romans do.","Andere Länder, andere Sitten."],
+  ["A storm in a teacup.","Ein Sturm im Wasserglas."],
+  ["Burn the midnight oil.","Bis spät in die Nacht arbeiten."],
+  ["Love makes the world go round.","Liebe bewegt die Welt."],
+  ["The calm before the storm.","Die Ruhe vor dem Sturm."],
+  ["The best is yet to come.","Das Beste kommt erst noch."],
+  ["All's well that ends well.","Ende gut, alles gut."]
+];
+const START = new Date(2026, 10, 14);  // 14.11.2026
+const BIRTH = new Date(1964, 10, 14);  // Evi: 14. November 1964
+const WDS = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+const WDFULL_EN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const MONTHS = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+const MONTHS_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const ORD_EN = { 1: 'first', 2: 'second', 3: 'third', 4: 'fourth', 5: 'fifth', 6: 'sixth', 7: 'seventh', 8: 'eighth', 9: 'ninth', 10: 'tenth', 11: 'eleventh', 12: 'twelfth', 13: 'thirteenth', 14: 'fourteenth', 15: 'fifteenth', 16: 'sixteenth', 17: 'seventeenth', 18: 'eighteenth', 19: 'nineteenth', 20: 'twentieth', 21: 'twenty-first', 22: 'twenty-second', 23: 'twenty-third', 24: 'twenty-fourth', 25: 'twenty-fifth', 26: 'twenty-sixth', 27: 'twenty-seventh', 28: 'twenty-eighth', 29: 'twenty-ninth', 30: 'thirtieth', 31: 'thirty-first' };
+const cards = IDIOMS.map((q, i) => {
+  const d = new Date(START); d.setDate(d.getDate() + i);
+  const ep = Math.round((d - BIRTH) / 864e5) + 1;  // Geburtstag = Episode 1
+  return { d, en: q[0], de: q[1], ep };
+});
+let index = 0;
+let reading = false;
+function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+function dateStr(d) { return WDS[d.getDay()] + ' · ' + String(d.getDate()).padStart(2, '0') + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + d.getFullYear(); }
+function numWords(n) {
+  const ones = ['','ein','zwei','drei','vier','fünf','sechs','sieben','acht','neun','zehn','elf','zwölf','dreizehn','vierzehn','fünfzehn','sechzehn','siebzehn','achtzehn','neunzehn'];
+  const tens = ['','','zwanzig','dreißig','vierzig','fünfzig','sechzig','siebzig','achtzig','neunzig'];
+  const u100 = x => x < 20 ? ones[x] : (x % 10 ? ones[x % 10] + 'und' + tens[Math.floor(x / 10)] : tens[Math.floor(x / 10)]);
+  const u1000 = x => (x >= 100 ? ones[Math.floor(x / 100)] + 'hundert' : '') + (x % 100 ? u100(x % 100) : '');
+  if (n < 1000) return u1000(n);
+  const t = Math.floor(n / 1000), r = n % 1000;
+  return (t === 1 ? 'ein' : u1000(t)) + 'tausend' + (r ? (r < 100 ? 'und' : '') + u1000(r) : '');
+}
+function render() {
+  const c = cards[index];
+  document.getElementById('counter').textContent = 'TAG ' + String(index + 1).padStart(2, '0') + ' VON ' + cards.length + '  ·  EPISODE ' + fmt(c.ep);
+  document.getElementById('rubric').textContent = dateStr(c.d);
+  document.getElementById('epNum').textContent = fmt(c.ep);
+  document.getElementById('idiomLabel').textContent = 'English Redewendung · ' + dateStr(c.d);
+  document.getElementById('enText').textContent = c.en;
+  document.getElementById('deText').textContent = c.de;
+}
+function pickVoice(prefix) {
+  const voices = window.speechSynthesis.getVoices();
+  return voices.find(v => v.lang && v.lang.toLowerCase().startsWith(prefix));
+}
+function speechParts() {
+  const c = cards[index];
+  return WDFULL_EN[c.d.getDay()] + ', the ' + ORD_EN[c.d.getDate()] + ' of ' + MONTHS_EN[c.d.getMonth()] + ', twenty twenty-six. ' + c.en;
+}
+function makeUtterance(text, lang, voice, onend) {
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang;
+  u.rate = 0.85;
+  u.pitch = 1;
+  if (voice) u.voice = voice;
+  if (onend) u.onend = onend;
+  return u;
+}
+function speakCurrent() {
+  if (!reading || !('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const voiceEn = pickVoice('en') || pickVoice('en-gb');
+  const uEn = makeUtterance(speechParts(), 'en-GB', voiceEn, () => {
+    setTimeout(() => { if (reading) setReading(false); }, 100);
+  });
+  window.speechSynthesis.speak(uEn);
+}
+function setReading(b) {
+  reading = b;
+  const btn = document.getElementById('speakBtn');
+  btn.textContent = b ? '⏹ Stopp' : '🔊 Vorlesen';
+  btn.classList.toggle('active', b);
+  btn.setAttribute('aria-pressed', b ? 'true' : 'false');
+}
+function stopReading() {
+  setReading(false);
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+}
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+}
+document.getElementById('speakBtn').addEventListener('click', () => {
+  if (reading) { stopReading(); }
+  else { setReading(true); speakCurrent(); }
+});
+function go(step) {
+  index = (index + step + cards.length) % cards.length;
+  render();
+  if (reading) speakCurrent();
+}
+document.getElementById('nextBtn').addEventListener('click', () => go(1));
+document.getElementById('prevBtn').addEventListener('click', () => go(-1));
+document.getElementById('studyCard').addEventListener('click', () => go(1));
+(function buildCal() {
+  const grid = document.getElementById('calGrid');
+  const WD = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+  const days = [[10, 2026], [11, 2026]];  // November, Dezember
+  days.forEach(([m, y]) => {
+    const box = document.createElement('div'); box.className = 'cal-m';
+    const h = document.createElement('h4'); h.textContent = MONTHS[m] + ' ' + y; box.appendChild(h);
+    const w = document.createElement('div'); w.className = 'cal-w';
+    WD.forEach(d => { const s = document.createElement('span'); s.textContent = d; w.appendChild(s); });
+    box.appendChild(w);
+    const dg = document.createElement('div'); dg.className = 'cal-d';
+    const lead = (new Date(y, m, 1).getDay() + 6) % 7;
+    for (let b = 0; b < lead; b++) { const bl = document.createElement('span'); bl.className = 'blank'; dg.appendChild(bl); }
+    const dim = new Date(y, m + 1, 0).getDate();
+    for (let d = 1; d <= dim; d++) {
+      const date = new Date(y, m, d);
+      const idx = Math.round((date - START) / 864e5);
+      if (idx < 0 || idx >= cards.length) {
+        const off = document.createElement('button'); off.type = 'button'; off.textContent = d;
+        off.className = 'past'; off.disabled = true; off.tabIndex = -1;
+        dg.appendChild(off);
+      } else {
+        const b = document.createElement('button'); b.type = 'button';
+        b.textContent = d;
+        b.title = MONTHS[m] + ' ' + d + ', ' + y;
+        if (date.getDay() === 0) b.className = 'sun';
+        b.addEventListener('click', e => {
+          e.stopPropagation();
+          index = idx; render();
+          closeDlg('dlgCal');
+          stopReading();
+          document.getElementById('startPage').classList.add('gone');
+        });
+        dg.appendChild(b);
+      }
+    }
+    box.appendChild(dg);
+    grid.appendChild(box);
+  });
+})();
+document.getElementById('calBtn').addEventListener('click', e => { e.stopPropagation(); stopReading(); openDlg('dlgCal'); });
+function openDlg(id) { document.getElementById(id).classList.add('open'); }
+function closeDlg(id) { document.getElementById(id).classList.remove('open'); }
+function toggleStudio() {
+  const panel = document.getElementById('studioPanel');
+  const card = document.getElementById('foldcard');
+  panel.classList.toggle('open');
+  const open = panel.classList.contains('open');
+  card.style.animationPlayState = open ? 'paused' : 'running';
+  if (open) card.style.transform = 'rotateY(0deg)';
+}
+document.getElementById('studioPanel').addEventListener('click', () => toggleStudio());
+document.getElementById('studioToggle').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleStudio(); } });
+document.getElementById('startBtn').addEventListener('click', e => { e.stopPropagation(); document.getElementById('startPage').classList.add('gone'); });
+document.getElementById('startTopBtn').addEventListener('click', e => { e.stopPropagation(); index = 0; render(); document.getElementById('startPage').classList.add('gone'); });
+document.getElementById('titleBtn').addEventListener('click', () => { stopReading(); document.getElementById('startPage').classList.remove('gone'); });
+document.getElementById('startPage').addEventListener('click', () => document.getElementById('startPage').classList.add('gone'));
+(function initStart() {
+  const today = new Date();
+  const days = Math.floor((today - BIRTH) / 864e5) + 1;
+  document.getElementById('startEp').textContent = 'Heute: Episode ' + fmt(days) + ' deines Lebens';
+})();
+(function makePrintSheets() {
+  const area = document.getElementById('printArea');
+  // Deckblatt als kleine Karte (Karte 1 von 49)
+  const items = [{ cover: true }].concat(cards.map(c => ({ c: c })));
+  const PER_SHEET = 20;
+  const totalSheets = Math.ceil(items.length / PER_SHEET);
+  for (let s = 0; s < totalSheets; s++) {
+    const sheet = document.createElement('div');
+    sheet.style.position = 'relative';
+    sheet.className = 'sheet';
+    const head = document.createElement('div');
+    head.className = 'print-heading';
+    head.innerHTML = '<span>Evis HTB · 2026 · Jahresband · Englische Redewendungen</span><span>' + (s + 1) + ' / ' + totalSheets + '</span>';
+    area.appendChild(head);
+    items.slice(s * PER_SHEET, (s + 1) * PER_SHEET).forEach(item => {
+      const chip = document.createElement('div');
+      if (item.cover) {
+        chip.className = 'chip cv';
+        chip.innerHTML =
+          '<div class="c-glue"></div>' +
+          '<div class="cv-label2">EVIS<br>HOSENTASCHENBUCH</div>' +
+          '<div class="cv-year2">2026</div>' +
+          '<div class="cv-lion2">🇬🇧</div>' +
+          '<div class="cv-name2">Evi</div>' +
+          '<div class="cv-orn2">✦ ─── ✦ ─── ✦</div>' +
+          '<div class="cv-sub2">Jahresband · 48 Tage<br>Englisch / Deutsch<br>Englische Redewendungen</div>';
+      } else {
+        const c = item.c;
+        const len = c.en.length + c.de.length;
+        chip.className = 'chip' + (len > 130 ? ' xl' : len > 95 ? ' lg' : '');
+        chip.innerHTML =
+          '<div class="c-glue"></div>' +
+          '<div class="c-top"><span class="c-label">Episode ' + fmt(c.ep) + '</span><span class="c-rub">' + dateStr(c.d) + '</span></div>' +
+          '<div class="eng">' + c.en + '</div>' +
+          '<div class="rule"></div>' +
+          '<div class="de">' + c.de + '</div>';
+      }
+      sheet.appendChild(chip);
+    });
+    if (s === totalSheets - 1 && items.length % PER_SHEET) {
+      const ye = document.createElement('div');
+      ye.className = 'year-end';
+      ye.innerHTML = '✦ &nbsp;Ende des Jahresbandes 2026 &nbsp;✦<br>48 englische Redewendungen';
+      sheet.appendChild(ye);
+    }
+    const foot = document.createElement('div');
+    foot.className = 'sheet-footer';
+    foot.textContent = 'ARC(E)ANA creative studio';
+    sheet.appendChild(foot);
+    area.appendChild(sheet);
+  }
+})();
+document.getElementById('printBtn').addEventListener('click', () => window.print());
+render();
+</script>
+</body>
+</html>
