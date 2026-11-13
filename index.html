@@ -104,8 +104,7 @@ footer a { color: var(--muted); text-decoration: underline; cursor: pointer; }
   .studio-panel { display: none !important; }
   .start { display: none !important; }
   .print-only { display: block !important; width: 194mm !important; max-width: 194mm !important; margin: 0 !important; }
-  .print-heading { display: flex; align-items: center; justify-content: space-between; font-size: 7pt; line-height: 1.1; color: #555; font-weight: 700; padding: 0 0 0.8mm; width: 192mm; margin: 0; }
-  .sheet { display: grid; grid-template-columns: repeat(5, 36mm); grid-auto-rows: 66mm; gap: 0.5mm 2.6mm; padding: 0 0 1mm; width: 192mm; margin: 0; page-break-after: always; position: relative; box-sizing: content-box; }
+  .sheet { display: grid; grid-template-columns: repeat(5, 36mm); grid-auto-rows: 66mm; gap: 0.3mm 2.6mm; padding: 0; width: 192mm; margin: 0; page-break-after: always; position: relative; box-sizing: content-box; overflow: hidden; }
   .sheet:last-child { page-break-after: auto; }
   .chip { border: 0.35mm dashed #999; padding: 1.5mm 2mm 2mm; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; break-inside: avoid; }  /* gestrichelte Linie = Schneidelinie, Karte 36 x 66 mm */
   .c-glue { width: 100%; border-bottom: 0.25mm dotted #ccc; margin-bottom: 1.1mm; flex: none; }  /* Klebefläche oben */
@@ -153,7 +152,7 @@ footer a { color: var(--muted); text-decoration: underline; cursor: pointer; }
 <main class="app">
   <header class="top">
     <h1 id="titleBtn" title="Deckblatt öffnen" style="cursor:pointer">Evis HTB · 2026</h1>
-    <p>Jahresband · ✦ · 48 Tage · 14.11. bis 31.12.2026<br>Version 1.2.1</p>
+    <p>Jahresband · ✦ · 48 Tage · 14.11. bis 31.12.2026<br>Version 1.2.2</p>
   </header>
   <div class="counter" id="counter">TAG 01 VON 48  ·  EPISODE 22.646</div>
   <section class="card" id="studyCard" aria-live="polite">
@@ -443,10 +442,6 @@ document.getElementById('startPage').addEventListener('click', () => document.ge
     const sheet = document.createElement('div');
     sheet.style.position = 'relative';
     sheet.className = 'sheet';
-    const head = document.createElement('div');
-    head.className = 'print-heading';
-    head.innerHTML = '<span>Evis HTB · 2026 · Jahresband · Englische Redewendungen</span><span>' + (s + 1) + ' / ' + totalSheets + '</span>';
-    area.appendChild(head);
     items.slice(s * PER_SHEET, (s + 1) * PER_SHEET).forEach(item => {
       const chip = document.createElement('div');
       if (item.cover) {
@@ -480,7 +475,7 @@ document.getElementById('startPage').addEventListener('click', () => document.ge
     }
     const foot = document.createElement('div');
     foot.className = 'sheet-footer';
-    foot.textContent = 'ARC(E)ANA creative studio';
+    foot.textContent = 'Evis HTB · 2026 · Bogen ' + (s + 1) + ' / ' + totalSheets + ' · ARC(E)ANA creative studio';
     sheet.appendChild(foot);
     area.appendChild(sheet);
   }
