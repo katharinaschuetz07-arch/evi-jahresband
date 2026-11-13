@@ -104,22 +104,21 @@ footer a { color: var(--muted); text-decoration: underline; cursor: pointer; }
   .studio-panel { display: none !important; }
   .start { display: none !important; }
   .print-only { display: block !important; width: 194mm !important; max-width: 194mm !important; margin: 0 !important; }
-  .sheet { display: grid; grid-template-columns: repeat(5, 36mm); grid-auto-rows: 66mm; gap: 0.3mm 2.6mm; padding: 0; width: 192mm; margin: 0; position: relative; break-inside: avoid; page-break-inside: avoid; }  /* schlichte Bauweise wie beim funktionierenden 30er-Raster: kein overflow:hidden, kein content-box */
+  .sheet { display: grid; grid-template-columns: repeat(5, 33mm); grid-auto-rows: 60mm; gap: 0.3mm 2.6mm; padding: 0; width: 176mm; margin: 0 auto; break-inside: avoid; page-break-inside: avoid; }  /* 5 Spalten à 33 mm × 4 Reihen à 60 mm = 20 Karten pro A4 */
   .sheet + .sheet { break-before: page; page-break-before: always; }
-  .chip { border: 0.35mm dashed #999; padding: 1.5mm 2mm 2mm; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; }  /* gestrichelte Linie = Schneidelinie, Karte 36 x 66 mm – ohne break-inside:avoid */
+  .chip { border: 0.35mm dashed #999; padding: 1.2mm 2mm 1.5mm; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; }  /* gestrichelte Linie = Schneidelinie, Karte 33 x 60 mm */
   .c-glue { width: 100%; border-bottom: 0.25mm dotted #ccc; margin-bottom: 1.1mm; flex: none; }  /* Klebefläche oben */
   .chip .c-top { display: block; width: 100%; margin-bottom: 2mm; }  /* Episode-Zeile, darunter Datum */
   .chip .c-label { display: block; font-size: 6pt; font-weight: 700; letter-spacing: .04em; color: #2a52be; }
   .chip .c-rub { display: block; font-size: 6.2pt; font-weight: 400; letter-spacing: .04em; color: #666; margin-top: 0.3mm; }
   .chip .eng { font-size: 9.4pt; font-weight: 400; color: #1b2a4a; line-height: 1.12; overflow-wrap: break-word; }
   .chip .eng::first-line { font-weight: 800; }  /* nur die erste Zeile fett */
-  .chip .rule { width: 10mm; height: 0.5mm; background: #bbb; margin: 2.6mm 0; }
+  .chip .rule { width: 10mm; height: 0.5mm; background: #bbb; margin: 1.8mm 0; }
   .chip .de { font-size: 7.6pt; font-weight: 400; color: #333; line-height: 1.12; overflow-wrap: break-word; }
   .year-end { grid-column: 2 / -1; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 13pt; font-weight: 700; color: #1b2a4a; border: 0.4mm dashed #e7c26a; border-radius: 4mm; margin-top: 2mm; }
   .chip.lg .de { font-size: 7pt; }
   .chip.xl .de { font-size: 6.4pt; }
   .chip.lg .eng { font-size: 8.4pt; } .chip.xl .eng { font-size: 7.4pt; }
-  .sheet-footer { position: absolute; bottom: 0; left: 0; width: 100%; text-align: center; font-size: 6pt; line-height: 1; color: #aaa; }  /* im unteren Randbereich, ohne Kartenreihe */
   .chip.cv { background: linear-gradient(160deg, #101c36 0%, #1b2a4a 45%, #2a52be 100%); border: 0.35mm dashed #999; }  /* Deckblatt als kleine Karte */
   .chip.cv .c-glue { border-bottom: 0.25mm dotted rgba(231,194,106,.6); }
   .cv-label2 { font-size: 4.4pt; font-weight: 700; letter-spacing: .18em; color: #dbe6ff; line-height: 1.5; }
@@ -152,15 +151,15 @@ footer a { color: var(--muted); text-decoration: underline; cursor: pointer; }
 <main class="app">
   <header class="top">
     <h1 id="titleBtn" title="Deckblatt öffnen" style="cursor:pointer">Evis HTB · 2026</h1>
-    <p>Jahresband · ✦ · 48 Tage · 14.11. bis 31.12.2026<br>Version 1.2.6</p>
+    <p>Jahresband · ✦ · 48 Tage · 14.11. bis 31.12.2026<br>Version 1.3.1</p>
   </header>
-  <div class="counter" id="counter">TAG 01 VON 48  ·  EPISODE 23.377</div>
+  <div class="counter" id="counter">TAG 01 VON 48  ·  EPISODE 22.646</div>
   <section class="card" id="studyCard" aria-live="polite">
     <button class="cal-btn" id="calBtn" type="button" title="Datumsregister öffnen – Tag wählen">📅</button>
     <div class="rubric" id="rubric">Sa · 14.11.2026</div>
     <div class="en">
       <div class="label" id="epLabel">Episode deines Lebens</div>
-      <div class="epnum" id="epNum">23.377</div>
+      <div class="epnum" id="epNum">22.646</div>
     </div>
     <div class="rule"></div>
     <div class="de">
@@ -207,7 +206,7 @@ footer a { color: var(--muted); text-decoration: underline; cursor: pointer; }
   <p><strong>Ella Pinorella Verlag · Katharina Schütz</strong><br>Herausgeberin und inhaltlich Verantwortliche<br>Platz der Einheit 10 · 14467 Potsdam · Deutschland<br>E-Mail: info@ella-pinorella.de</p>
   <p><strong>Über dieses Hosentaschenbuch (HTB)</strong></p>
   <p>„Evis HTB · 2026 – Der Jahresband"<br>48 Karten vom 14. November bis zum 31. Dezember 2026 – jeden Tag eine englische Redewendung mit deutscher Übersetzung.<br>Ein Geschenk von Katharina.</p>
-  <p>Evi ist am 14. November 1962 geboren – jeder Tag ist eine Episode ihres Lebens. Der Band beginnt an ihrem 64. Geburtstag mit Episode 23.377 und endet Silvester mit Episode 23.424.</p>
+  <p>Evi ist am 14. November 1964 geboren – jeder Tag ist eine Episode ihres Lebens. Der Band beginnt an ihrem 62. Geburtstag mit Episode 22.646 und endet Silvester mit Episode 22.693.</p>
   <p>Mit bekannten englischen Redewendungen (English idioms) und ihren deutschen Entsprechungen – zum Lernen, Schmunzeln und Mitnehmen in der Hosentasche.</p>
   <p>Ein Hosentaschenbuch nach dem Lernkonzept ARC(E)ANA – Entdecken. Entwickeln. Erschaffen.</p>
   <p>© 2026 Ella Pinorella Verlag · Katharina Schütz</p>
@@ -284,7 +283,7 @@ const IDIOMS = [
   ["All's well that ends well.","Ende gut, alles gut."]
 ];
 const START = new Date(2026, 10, 14);  // 14.11.2026
-const BIRTH = new Date(1962, 10, 14);  // Evi: 14. November 1962
+const BIRTH = new Date(1964, 10, 14);  // Evi: 14. November 1964
 const WDS = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
 const WDFULL_EN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const MONTHS = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
@@ -473,10 +472,6 @@ document.getElementById('startPage').addEventListener('click', () => document.ge
       ye.innerHTML = '✦ &nbsp;Ende des Jahresbandes 2026 &nbsp;✦<br>48 englische Redewendungen';
       sheet.appendChild(ye);
     }
-    const foot = document.createElement('div');
-    foot.className = 'sheet-footer';
-    foot.textContent = 'Evis HTB · 2026 · Bogen ' + (s + 1) + ' / ' + totalSheets + ' · ARC(E)ANA creative studio';
-    sheet.appendChild(foot);
     area.appendChild(sheet);
   }
 })();
