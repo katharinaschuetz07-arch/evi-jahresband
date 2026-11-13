@@ -104,9 +104,9 @@ footer a { color: var(--muted); text-decoration: underline; cursor: pointer; }
   .studio-panel { display: none !important; }
   .start { display: none !important; }
   .print-only { display: block !important; width: 194mm !important; max-width: 194mm !important; margin: 0 !important; }
-  .sheet { display: grid; grid-template-columns: repeat(5, 36mm); grid-auto-rows: 66mm; gap: 0.3mm 2.6mm; padding: 0; width: 192mm; margin: 0; position: relative; box-sizing: content-box; overflow: hidden; }
-  .sheet + .sheet { break-before: page; page-break-before: always; }  /* Umbruch VOR dem Bogen statt danach – verhindert Leerseiten */
-  .chip { border: 0.35mm dashed #999; padding: 1.5mm 2mm 2mm; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; break-inside: avoid; }  /* gestrichelte Linie = Schneidelinie, Karte 36 x 66 mm */
+  .sheet { display: grid; grid-template-columns: repeat(5, 36mm); grid-auto-rows: 66mm; gap: 0.3mm 2.6mm; padding: 0; width: 192mm; margin: 0; position: relative; break-inside: avoid; page-break-inside: avoid; }  /* schlichte Bauweise wie beim funktionierenden 30er-Raster: kein overflow:hidden, kein content-box */
+  .sheet + .sheet { break-before: page; page-break-before: always; }
+  .chip { border: 0.35mm dashed #999; padding: 1.5mm 2mm 2mm; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; }  /* gestrichelte Linie = Schneidelinie, Karte 36 x 66 mm – ohne break-inside:avoid */
   .c-glue { width: 100%; border-bottom: 0.25mm dotted #ccc; margin-bottom: 1.1mm; flex: none; }  /* Klebefläche oben */
   .chip .c-top { display: block; width: 100%; margin-bottom: 2mm; }  /* Episode-Zeile, darunter Datum */
   .chip .c-label { display: block; font-size: 6pt; font-weight: 700; letter-spacing: .04em; color: #2a52be; }
@@ -152,7 +152,7 @@ footer a { color: var(--muted); text-decoration: underline; cursor: pointer; }
 <main class="app">
   <header class="top">
     <h1 id="titleBtn" title="Deckblatt öffnen" style="cursor:pointer">Evis HTB · 2026</h1>
-    <p>Jahresband · ✦ · 48 Tage · 14.11. bis 31.12.2026<br>Version 1.2.5</p>
+    <p>Jahresband · ✦ · 48 Tage · 14.11. bis 31.12.2026<br>Version 1.2.6</p>
   </header>
   <div class="counter" id="counter">TAG 01 VON 48  ·  EPISODE 23.377</div>
   <section class="card" id="studyCard" aria-live="polite">
@@ -175,7 +175,7 @@ footer a { color: var(--muted); text-decoration: underline; cursor: pointer; }
   </nav>
   <nav class="nav-row2">
     <button id="speakBtn" type="button" aria-pressed="false">🔊 Vorlesen</button>
-    <button class="print-btn" id="printBtn" type="button">▤ Druckvorlage (15 pro A4)</button>
+    <button class="print-btn" id="printBtn" type="button">▤ Druckvorlage (20 pro A4)</button>
   </nav>
   <footer>
     <div class="row1">
@@ -436,7 +436,7 @@ document.getElementById('startPage').addEventListener('click', () => document.ge
   const area = document.getElementById('printArea');
   // Deckblatt als kleine Karte (Karte 1 von 49)
   const items = [{ cover: true }].concat(cards.map(c => ({ c: c })));
-  const PER_SHEET = 15;  // 3 Reihen à 66 mm = 198,6 mm Bogenhöhe – passt auch mit großen Druckrändern auf eine Seite
+  const PER_SHEET = 20;
   const totalSheets = Math.ceil(items.length / PER_SHEET);
   for (let s = 0; s < totalSheets; s++) {
     const sheet = document.createElement('div');
